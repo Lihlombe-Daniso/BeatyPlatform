@@ -697,3 +697,274 @@ export default function App() {
       </View>
     </ScrollView>
   );
+
+
+  // Bookings Screen
+
+  const renderBookings = () => (
+    <ScrollView
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={styles.content}>
+        {selectedProfessional ? (
+          <>
+            <SectionTitle
+              title="Book an appointment"
+              subtitle={`Booking with ${selectedProfessional.name}`}
+            />
+
+            <View style={styles.formCard}>
+              <Text style={styles.label}>Your name</Text>
+
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your full name"
+                value={customerName}
+                onChangeText={setCustomerName}
+              />
+
+              <Text style={styles.label}>Phone number</Text>
+
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your phone number"
+                keyboardType="phone-pad"
+                value={customerPhone}
+                onChangeText={setCustomerPhone}
+              />
+
+              <Text style={styles.label}>Service</Text>
+
+              <TextInput
+                style={styles.input}
+                value={selectedService}
+                onChangeText={setSelectedService}
+                placeholder="Enter the service"
+              />
+
+              <Text style={styles.label}>
+                Appointment date and time
+              </Text>
+
+              <TextInput
+                style={styles.input}
+                value={appointmentDate}
+                onChangeText={setAppointmentDate}
+                placeholder="e.g. 25 October, 14:00"
+              />
+
+              <View style={styles.divider} />
+
+              <Text style={styles.label}>
+                Appointment location
+              </Text>
+
+              <TouchableOpacity
+                style={styles.optionRow}
+                onPress={() => setHouseCall(false)}
+              >
+                <Text style={styles.optionText}>
+                  🏢 Visit the professional
+                </Text>
+
+                <Text style={styles.optionText}>
+                  {houseCall ? "○" : "●"}
+                </Text>
+              </TouchableOpacity>
+
+              {selectedProfessional.houseCalls && (
+                <TouchableOpacity
+                  style={styles.optionRow}
+                  onPress={() => setHouseCall(true)}
+                >
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.optionText}>
+                      🏡 Request a house call
+                    </Text>
+
+                    <Text style={styles.mutedText}>
+                      Additional fee: R
+                      {selectedProfessional.houseCallFee.toFixed(2)}
+                    </Text>
+                  </View>
+
+                  <Text style={styles.optionText}>
+                    {houseCall ? "●" : "○"}
+                  </Text>
+                </TouchableOpacity>
+              )}
+
+              {houseCall && (
+                <>
+                  <Text style={styles.label}>
+                    Appointment address
+                  </Text>
+
+                  <TextInput
+                    style={[styles.input, { minHeight: 80 }]}
+                    placeholder="Enter your address"
+                    multiline
+                    value={customerAddress}
+                    onChangeText={setCustomerAddress}
+                  />
+                </>
+              )}
+
+              <View style={styles.summaryCard}>
+                <Text style={styles.summaryTitle}>
+                  Booking summary
+                </Text>
+
+                <View style={styles.summaryRow}>
+                  <Text style={styles.mutedText}>
+                    Service price
+                  </Text>
+
+                  <Text style={styles.summaryValue}>
+                    R{selectedProfessional.price.toFixed(2)}
+                  </Text>
+                </View>
+
+                <View style={styles.summaryRow}>
+                  <Text style={styles.mutedText}>
+                    House-call fee
+                  </Text>
+
+                  <Text style={styles.summaryValue}>
+                    R
+                    {(houseCall
+                      ? selectedProfessional.houseCallFee
+                      : 0
+                    ).toFixed(2)}
+                  </Text>
+                </View>
+
+                <View style={styles.divider} />
+
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryTitle}>
+                    Total
+                  </Text>
+
+                  <Text style={styles.totalPrice}>
+                    R
+                    {(
+                      selectedProfessional.price +
+                      (houseCall
+                        ? selectedProfessional.houseCallFee
+                        : 0)
+                    ).toFixed(2)}
+                  </Text>
+                </View>
+              </View>
+
+              <Button
+                title="Submit booking request"
+                onPress={submitBooking}
+              />
+
+              <Button
+                title="Cancel"
+                secondary
+                onPress={() => {
+                  setSelectedProfessional(null);
+                  setScreen("Discover");
+                }}
+              />
+            </View>
+          </>
+        ) : (
+          <>
+            <SectionTitle
+              title="My bookings"
+              subtitle="Manage your appointment requests."
+            />
+
+            {bookings.length === 0 ? (
+              <View style={styles.emptyState}>
+                <Text style={{ fontSize: 45 }}>📅</Text>
+
+                <Text style={styles.professionalName}>
+                  No bookings yet
+                </Text>
+
+                <Text style={styles.mutedText}>
+                  Your appointment requests will appear here.
+                </Text>
+
+                <Button
+                  title="Find a professional"
+                  onPress={() => setScreen("Discover")}
+                />
+              </View>
+            ) : (
+              bookings.map((booking) => (
+                <View key={booking.id} style={styles.bookingCard}>
+                  <Text style={styles.professionalName}>
+                    {booking.professional}
+                  </Text>
+
+                  <Text style={styles.mutedText}>
+                    {booking.service}
+                  </Text>
+
+                  <Text style={styles.description}>
+                    📅 {booking.date}
+                  </Text>
+
+                  <Text style={styles.description}>
+                    {booking.houseCall
+                      ? "🏡 House call"
+                      : "🏢 Visit professional"}
+                  </Text>
+
+                  <Text style={styles.price}>
+                    R
+                    {(
+                      booking.servicePrice +
+                      booking.houseCallFee
+                    ).toFixed(2)}
+                  </Text>
+
+                  <Text style={styles.status}>
+                    Status: {booking.status}
+                  </Text>
+
+                  {booking.status === "Pending" && (
+                    <Button
+                      title="Cancel request"
+                      secondary
+                      onPress={() =>
+                        Alert.alert(
+                          "Cancel booking?",
+                          "Cancel this booking request?",
+                          [
+                            {
+                              text: "Keep booking",
+                              style: "cancel",
+                            },
+                            {
+                              text: "Cancel booking",
+                              style: "destructive",
+                              onPress: () =>
+                                updateBookingStatus(
+                                  booking.id,
+                                  "Cancelled"
+                                ),
+                            },
+                          ]
+                        )
+                      }
+                    />
+                  )}
+                </View>
+              ))
+            )}
+          </>
+        )}
+      </View>
+    </ScrollView>
+  );
+
+  
