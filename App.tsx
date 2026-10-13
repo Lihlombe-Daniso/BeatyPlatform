@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { supabase } from './lib/supabase';
 import RegisterScreen from './screens/RegisterScreen';
+import LoginScreen from './screens/LoginScreen';
 import React, { useMemo, useState } from "react";
 
 import {
@@ -36,6 +37,7 @@ type Screen =
   | "Bookings"
   | "Products"
   | "Dashboard"
+  | "Login"
   | "Register";
 
 type BookingStatus =
@@ -1274,6 +1276,7 @@ export default function App() {
       { screen: "Bookings", icon: "▣", label: "Bookings" },
       { screen: "Products", icon: "♧", label: "Shop" },
       { screen: "Dashboard", icon: "▤", label: "Business" },
+      { screen: "Login", icon: "🔑", label: "Login" },
     ];
 
   return (
@@ -1298,12 +1301,23 @@ export default function App() {
 
           <TouchableOpacity
             style={styles.headerButton}
+            onPress={() => setScreen("Login")}
+          >
+            <Text style={styles.headerButtonText}>
+              Login
+            </Text>
+          </TouchableOpacity> 
+
+          <TouchableOpacity
+            style={styles.headerButton}
             onPress={() => setScreen("Register")}
           >
             <Text style={styles.headerButtonText}>
               Create Account
             </Text>
           </TouchableOpacity> 
+
+         
 
           <Text style={styles.headerButtonText}>
             ♡ {bookings.length > 0 ? bookings.length : ""}
@@ -1318,6 +1332,7 @@ export default function App() {
         {screen === "Products" && renderProducts()}
         {screen === "Dashboard" && renderDashboard()}
         {screen === "Register" && <RegisterScreen />}
+        {screen === "Login" && <LoginScreen />}
 
       </View>
 
