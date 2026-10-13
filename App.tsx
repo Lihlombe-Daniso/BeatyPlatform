@@ -612,3 +612,88 @@ export default function App() {
       </View>
     </ScrollView>
   );
+
+  // Discovery Screen
+
+  const renderDiscover = () => (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View style={styles.content}>
+        <SectionTitle
+          title="Find your beauty professional"
+          subtitle="Search by name, city or service."
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Search professionals or locations..."
+          placeholderTextColor="#958692"
+          value={search}
+          onChangeText={setSearch}
+        />
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginVertical: 15 }}
+        >
+          {[
+            "All",
+            "Nails",
+            "Makeup",
+            "Wigs",
+            "Weaves",
+            "Hair",
+            "Lashes",
+          ].map((category) => (
+            <TouchableOpacity
+              key={category}
+              onPress={() => setSelectedCategory(category)}
+              style={[
+                styles.filterChip,
+                selectedCategory === category &&
+                  styles.activeFilterChip,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.filterText,
+                  selectedCategory === category &&
+                    styles.activeFilterText,
+                ]}
+              >
+                {category}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <Text style={styles.mutedText}>
+          {filteredProfessionals.length} professionals found
+        </Text>
+
+        {filteredProfessionals.map((professional) => (
+          <ProfessionalCard
+            key={professional.id}
+            professional={professional}
+          />
+        ))}
+
+        {filteredProfessionals.length === 0 && (
+          <View style={styles.emptyState}>
+            <Text style={{ fontSize: 40 }}>🔎</Text>
+
+            <Text style={styles.professionalName}>
+              No professionals found
+            </Text>
+
+            <Text style={styles.mutedText}>
+              Try another search or category.
+            </Text>
+          </View>
+        )}
+      </View>
+    </ScrollView>
+  );
