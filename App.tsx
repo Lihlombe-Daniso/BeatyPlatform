@@ -221,3 +221,14 @@ export default function App() {
 
   const [activeBooking, setActiveBooking] =
     useState<Booking | null>(null);
+
+  // Commission section caltulation for the app owner
+
+   const calculateCommission = (
+    servicePrice: number,
+    rate = 0.05
+  ) => {
+    return Math.round(servicePrice * rate * 100) / 100;
+  };
+
+  
