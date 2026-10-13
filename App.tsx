@@ -253,3 +253,98 @@ export default function App() {
       return matchesSearch && matchesCategory;
     });
   }, [professionals, search, selectedCategory]);
+
+  // Booking creation and management section
+
+   const startBooking = (professional: Professional) => {
+    setSelectedProfessional(professional);
+    setSelectedService(professional.category);
+    setAppointmentDate("");
+    setHouseCall(false);
+    setCustomerAddress("");
+    setCustomerName("");
+    setCustomerPhone("");
+    setScreen("Bookings");
+  };
+
+  const submitBooking = () => {
+    if (!selectedProfessional) {
+      Alert.alert(
+        "Choose a professional",
+        "Please select a professional before booking."
+      );
+      return;
+    }
+
+    if (!customerName.trim()) {
+      Alert.alert("Missing name", "Enter your name.");
+      return;
+    }
+
+    if (!customerPhone.trim()) {
+      Alert.alert("Missing phone", "Enter your phone number.");
+      return;
+    }
+
+    if (!appointmentDate.trim()) {
+      Alert.alert(
+        "Missing appointment date",
+        "Enter your preferred appointment date and time."
+      );
+      return;
+    }
+
+    if (
+      houseCall &&
+      !selectedProfessional.houseCalls
+    ) {
+      Alert.alert(
+        "Unavailable",
+        "This professional does not offer house calls."
+      );
+      return;
+    }
+
+    if (houseCall && !customerAddress.trim()) {
+      Alert.alert(
+        "Missing address",
+        "Enter the address for your house-call request."
+      );
+      return;
+    }
+
+    const newBooking: Booking = {
+      id: Date.now().toString(),
+      professional: selectedProfessional.name,
+      service: selectedService,
+      date: appointmentDate,
+      servicePrice: selectedProfessional.price,
+      houseCallFee: houseCall
+        ? selectedProfessional.houseCallFee
+        : 0,
+      houseCall,
+      status: "Pending",
+    };
+
+    setBookings((previous) => [
+      ...previous,
+      newBooking,
+    ]);
+
+    setActiveBooking(newBooking);
+
+    setSelectedProfessional(null);
+
+    Alert.alert(
+      "Booking request created",
+      "Your request has been added to this app's temporary booking list. It has not been sent to the professional yet.",
+      [
+        {
+          text: "View bookings",
+          onPress: () => setScreen("Bookings"),
+        },
+      ]
+    );
+  };
+
+  
