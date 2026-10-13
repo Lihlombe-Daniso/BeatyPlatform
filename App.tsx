@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { supabase } from './lib/supabase';
+import RegisterScreen from './screens/RegisterScreen';
 import React, { useMemo, useState } from "react";
 
 import {
@@ -32,7 +35,8 @@ type Screen =
   | "Discover"
   | "Bookings"
   | "Products"
-  | "Dashboard";
+  | "Dashboard"
+  | "Register";
 
 type BookingStatus =
   | "Pending"
@@ -218,6 +222,8 @@ export default function App() {
   const [activeBooking, setActiveBooking] =
     useState<Booking | null>(null);
 
+
+
   // ---------------- COMMISSION CALCULATION ------------
 
   const calculateCommission = (
@@ -269,6 +275,25 @@ export default function App() {
         "Choose a professional",
         "Please select a professional before booking."
       );
+
+      useEffect(() => {
+        async function testSupabase() {
+          const { data, error } = await supabase
+            .from('services')
+            .select('id')
+            .limit(1);
+
+          if (error) {
+            console.log('Supabase error:', error.message);
+            return;
+          }
+
+          console.log('Supabase connection successful:', data);
+        }
+
+        testSupabase();
+      }, []);
+
       return;
     }
 
@@ -646,14 +671,14 @@ export default function App() {
               style={[
                 styles.filterChip,
                 selectedCategory === category &&
-                  styles.activeFilterChip,
+                styles.activeFilterChip,
               ]}
             >
               <Text
                 style={[
                   styles.filterText,
                   selectedCategory === category &&
-                    styles.activeFilterText,
+                  styles.activeFilterText,
                 ]}
               >
                 {category}
@@ -1244,12 +1269,12 @@ export default function App() {
     icon: string;
     label: string;
   }[] = [
-    { screen: "Home", icon: "⌂", label: "Home" },
-    { screen: "Discover", icon: "⌕", label: "Discover" },
-    { screen: "Bookings", icon: "▣", label: "Bookings" },
-    { screen: "Products", icon: "♧", label: "Shop" },
-    { screen: "Dashboard", icon: "▤", label: "Business" },
-  ];
+      { screen: "Home", icon: "⌂", label: "Home" },
+      { screen: "Discover", icon: "⌕", label: "Discover" },
+      { screen: "Bookings", icon: "▣", label: "Bookings" },
+      { screen: "Products", icon: "♧", label: "Shop" },
+      { screen: "Dashboard", icon: "▤", label: "Business" },
+    ];
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -1270,6 +1295,16 @@ export default function App() {
           style={styles.headerButton}
           onPress={() => setScreen("Bookings")}
         >
+
+          <TouchableOpacity
+            style={styles.headerButton}
+            onPress={() => setScreen("Register")}
+          >
+            <Text style={styles.headerButtonText}>
+              Create Account
+            </Text>
+          </TouchableOpacity> 
+
           <Text style={styles.headerButtonText}>
             ♡ {bookings.length > 0 ? bookings.length : ""}
           </Text>
@@ -1282,6 +1317,8 @@ export default function App() {
         {screen === "Bookings" && renderBookings()}
         {screen === "Products" && renderProducts()}
         {screen === "Dashboard" && renderDashboard()}
+        {screen === "Register" && <RegisterScreen />}
+
       </View>
 
       <View style={styles.bottomNavigation}>
