@@ -380,3 +380,99 @@ export default function App() {
         styles.button,
         secondary && styles.secondaryButton,
       ]}
+
+         ]}
+      onPress={onPress}
+      activeOpacity={0.8}
+    >
+      <Text
+        style={[
+          styles.buttonText,
+          secondary && styles.secondaryButtonText,
+        ]}
+      >
+        {title}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  const SectionTitle = ({
+    title,
+    subtitle,
+  }: {
+    title: string;
+    subtitle?: string;
+  }) => (
+    <View style={styles.sectionHeader}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+
+      {subtitle ? (
+        <Text style={styles.sectionSubtitle}>
+          {subtitle}
+        </Text>
+      ) : null}
+    </View>
+  );
+
+  const ProfessionalCard = ({
+    professional,
+  }: {
+    professional: Professional;
+  }) => (
+    <View style={styles.professionalCard}>
+      <View style={styles.professionalTop}>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>
+            {professional.name.charAt(0)}
+          </Text>
+        </View>
+
+        <View style={styles.professionalInfo}>
+          <Text style={styles.professionalName}>
+            {professional.name}
+          </Text>
+
+          <Text style={styles.mutedText}>
+            {professional.category} · {professional.city}
+          </Text>
+
+          <Text style={styles.rating}>
+            ★ {professional.rating} ({professional.reviews} reviews)
+          </Text>
+        </View>
+      </View>
+
+      <Text style={styles.description}>
+        {professional.description}
+      </Text>
+
+      <View style={styles.priceRow}>
+        <View>
+          <Text style={styles.mutedText}>
+            Starting price
+          </Text>
+
+          <Text style={styles.price}>
+            R{professional.price.toFixed(2)}
+          </Text>
+        </View>
+
+        <View>
+          <Text style={styles.mutedText}>
+            House calls
+          </Text>
+
+          <Text style={styles.houseCallText}>
+            {professional.houseCalls
+              ? `Available · R${professional.houseCallFee}`
+              : "Not available"}
+          </Text>
+        </View>
+      </View>
+
+      <Button
+        title="Book appointment"
+        onPress={() => startBooking(professional)}
+      />
+    </View>
+  );
