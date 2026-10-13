@@ -361,3 +361,22 @@ export default function App() {
       )
     );
   };
+
+  // UI rendering functions for different screens
+
+  // Buttons
+
+   const Button = ({
+    title,
+    onPress,
+    secondary = false,
+  }: {
+    title: string;
+    onPress: () => void;
+    secondary?: boolean;
+  }) => (
+    <TouchableOpacity
+      style={[
+        styles.button,
+        secondary && styles.secondaryButton,
+      ]}
