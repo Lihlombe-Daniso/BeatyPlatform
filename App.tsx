@@ -197,4 +197,27 @@ export default function App() {
     initialProducts
   );
 
-  
+  const [bookings, setBookings] = useState<Booking[]>([]);
+
+  const [search, setSearch] = useState("");
+
+  const [selectedCategory, setSelectedCategory] =
+    useState("All");
+
+  const [selectedProfessional, setSelectedProfessional] =
+    useState<Professional | null>(null);
+
+  const [selectedService, setSelectedService] = useState("");
+
+  const [appointmentDate, setAppointmentDate] = useState("");
+
+  const [houseCall, setHouseCall] = useState(false);
+
+  const [customerAddress, setCustomerAddress] = useState("");
+
+  const [customerName, setCustomerName] = useState("");
+
+  const [customerPhone, setCustomerPhone] = useState("");
+
+  const [activeBooking, setActiveBooking] =
+    useState<Booking | null>(null);
