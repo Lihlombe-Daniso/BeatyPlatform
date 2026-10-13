@@ -15,7 +15,7 @@ import {
 // BeatyConnect App
 // Beaty Services Marketplace and Booking Application
 
-//Types of Category
+//Types of Categories of Beauty Services
 
 type Category =
   | "Nails"
@@ -24,3 +24,14 @@ type Category =
   | "Weaves"
   | "Hair"
   | "Lashes";
+
+// Different screens of the application
+
+type Screen =
+  | "Home"
+  | "Discover"
+  | "Bookings"
+  | "Products"
+  | "Dashboard";
+
+// Booking statuses
