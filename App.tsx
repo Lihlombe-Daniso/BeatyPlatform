@@ -12,10 +12,12 @@ import {
   SafeAreaView,
 } from "react-native";
 
-// BeatyConnect App
-// Beaty Services Marketplace and Booking Application
+// ======================================================
+// BEAUTYCONNECT
+// Beauty Services Marketplace and Booking Application
+// ======================================================
 
-//Types of Categories of Beauty Services
+// -------------------- TYPES ---------------------------
 
 type Category =
   | "Nails"
@@ -25,8 +27,6 @@ type Category =
   | "Hair"
   | "Lashes";
 
-// Different screens of the application
-
 type Screen =
   | "Home"
   | "Discover"
@@ -34,15 +34,11 @@ type Screen =
   | "Products"
   | "Dashboard";
 
-// Booking statuses
-
 type BookingStatus =
   | "Pending"
   | "Confirmed"
   | "Completed"
   | "Cancelled";
-
-// Booking interface
 
 interface Professional {
   id: string;
@@ -76,7 +72,7 @@ interface Booking {
   status: BookingStatus;
 }
 
-// Sample data of professionals, products, and bookings
+// -------------------- SAMPLE DATA ---------------------
 
 const initialProfessionals: Professional[] = [
   {
@@ -184,7 +180,7 @@ const initialProducts: BeautyProduct[] = [
   },
 ];
 
-//  Main App Component
+// -------------------- MAIN APP ------------------------
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("Home");
@@ -222,18 +218,18 @@ export default function App() {
   const [activeBooking, setActiveBooking] =
     useState<Booking | null>(null);
 
-  // Commission section caltulation for the app owner
+  // ---------------- COMMISSION CALCULATION ------------
 
-   const calculateCommission = (
+  const calculateCommission = (
     servicePrice: number,
     rate = 0.05
   ) => {
     return Math.round(servicePrice * rate * 100) / 100;
   };
 
-  // Search and filter section
+  // ---------------- SEARCH AND FILTER -----------------
 
-   const filteredProfessionals = useMemo(() => {
+  const filteredProfessionals = useMemo(() => {
     return professionals.filter((professional) => {
       const matchesSearch =
         professional.name
@@ -254,9 +250,9 @@ export default function App() {
     });
   }, [professionals, search, selectedCategory]);
 
-  // Booking creation and management section
+  // ---------------- BOOKING CREATION ------------------
 
-   const startBooking = (professional: Professional) => {
+  const startBooking = (professional: Professional) => {
     setSelectedProfessional(professional);
     setSelectedService(professional.category);
     setAppointmentDate("");
@@ -347,9 +343,9 @@ export default function App() {
     );
   };
 
-  // Booking management functions for confirming, completing, and cancelling bookings
+  // ---------------- BOOKING MANAGEMENT ----------------
 
-   const updateBookingStatus = (
+  const updateBookingStatus = (
     bookingId: string,
     status: BookingStatus
   ) => {
@@ -362,11 +358,9 @@ export default function App() {
     );
   };
 
-  // UI rendering functions for different screens
+  // ---------------- REUSABLE UI -----------------------
 
-  // Buttons
-
-   const Button = ({
+  const Button = ({
     title,
     onPress,
     secondary = false,
@@ -380,8 +374,6 @@ export default function App() {
         styles.button,
         secondary && styles.secondaryButton,
       ]}
-
-         ]}
       onPress={onPress}
       activeOpacity={0.8}
     >
@@ -477,9 +469,9 @@ export default function App() {
     </View>
   );
 
-  // Home Screen
+  // ---------------- HOME SCREEN -----------------------
 
-   const renderHome = () => (
+  const renderHome = () => (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.hero}>
         <Text style={styles.eyebrow}>
@@ -613,7 +605,7 @@ export default function App() {
     </ScrollView>
   );
 
-  // Discovery Screen
+  // ---------------- DISCOVER SCREEN -------------------
 
   const renderDiscover = () => (
     <ScrollView
@@ -698,8 +690,7 @@ export default function App() {
     </ScrollView>
   );
 
-
-  // Bookings Screen
+  // ---------------- BOOKINGS SCREEN -------------------
 
   const renderBookings = () => (
     <ScrollView
@@ -967,7 +958,7 @@ export default function App() {
     </ScrollView>
   );
 
-  // Products Screen
+  // ---------------- PRODUCTS SCREEN -------------------
 
   const renderProducts = () => (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -1032,9 +1023,9 @@ export default function App() {
     </ScrollView>
   );
 
-  // Dashboard Screen
+  // ---------------- DASHBOARD SCREEN ------------------
 
-   const completedBookings = bookings.filter(
+  const completedBookings = bookings.filter(
     (booking) => booking.status === "Completed"
   );
 
@@ -1244,10 +1235,11 @@ export default function App() {
         </Text>
       </View>
     </ScrollView>
+  );
 
-    // Navigation bar
+  // ---------------- MAIN NAVIGATION -------------------
 
-     const navigationItems: {
+  const navigationItems: {
     screen: Screen;
     icon: string;
     label: string;
@@ -1333,3 +1325,536 @@ export default function App() {
   );
 }
 
+// -------------------- STYLES --------------------------
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#FFF9FC",
+  },
+
+  appHeader: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F0DDE7",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
+  brand: {
+    fontSize: 22,
+    fontWeight: "900",
+    color: "#A52E68",
+    letterSpacing: -0.5,
+  },
+
+  brandSubtitle: {
+    fontSize: 8,
+    color: "#958692",
+    letterSpacing: 2,
+    marginTop: 2,
+  },
+
+  headerButton: {
+    height: 42,
+    minWidth: 42,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FBEAF2",
+    borderRadius: 14,
+  },
+
+  headerButtonText: {
+    fontSize: 18,
+    color: "#A52E68",
+    fontWeight: "700",
+  },
+
+  screenContainer: {
+    flex: 1,
+  },
+
+  hero: {
+    paddingHorizontal: 24,
+    paddingTop: 42,
+    paddingBottom: 35,
+    backgroundColor: "#FBEAF2",
+  },
+
+  eyebrow: {
+    color: "#A52E68",
+    fontSize: 11,
+    fontWeight: "800",
+    letterSpacing: 2,
+    marginBottom: 16,
+  },
+
+  heroTitle: {
+    fontSize: 43,
+    lineHeight: 48,
+    color: "#382333",
+    fontWeight: "900",
+    letterSpacing: -1.5,
+    marginBottom: 15,
+  },
+
+  heroDescription: {
+    fontSize: 15,
+    lineHeight: 24,
+    color: "#766472",
+    marginBottom: 25,
+  },
+
+  heroNote: {
+    marginTop: 15,
+    color: "#766472",
+    fontSize: 12,
+  },
+
+  content: {
+    paddingHorizontal: 18,
+    paddingTop: 25,
+    paddingBottom: 35,
+  },
+
+  sectionHeader: {
+    marginTop: 12,
+    marginBottom: 17,
+  },
+
+  sectionTitle: {
+    color: "#382333",
+    fontSize: 23,
+    fontWeight: "800",
+    letterSpacing: -0.5,
+  },
+
+  sectionSubtitle: {
+    marginTop: 5,
+    color: "#958692",
+    fontSize: 13,
+    lineHeight: 19,
+  },
+
+  categoryGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginBottom: 30,
+  },
+
+  categoryCard: {
+    width: "31.5%",
+    minHeight: 110,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#F0DDE7",
+    borderRadius: 16,
+    marginBottom: 10,
+    padding: 8,
+  },
+
+  categoryIcon: {
+    fontSize: 29,
+    marginBottom: 8,
+  },
+
+  categoryName: {
+    color: "#382333",
+    fontSize: 12,
+    fontWeight: "700",
+  },
+
+  professionalCard: {
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#F0DDE7",
+    borderRadius: 17,
+    padding: 17,
+    marginBottom: 14,
+  },
+
+  professionalTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+
+  avatar: {
+    width: 54,
+    height: 54,
+    borderRadius: 17,
+    backgroundColor: "#FBEAF2",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+  },
+
+  avatarText: {
+    color: "#A52E68",
+    fontSize: 24,
+    fontWeight: "900",
+  },
+
+  professionalInfo: {
+    flex: 1,
+  },
+
+  professionalName: {
+    color: "#382333",
+    fontSize: 16,
+    fontWeight: "800",
+    marginBottom: 4,
+  },
+
+  mutedText: {
+    color: "#958692",
+    fontSize: 12,
+    lineHeight: 18,
+  },
+
+  rating: {
+    color: "#BA7A2D",
+    fontSize: 12,
+    fontWeight: "700",
+    marginTop: 5,
+  },
+
+  description: {
+    color: "#766472",
+    fontSize: 13,
+    lineHeight: 20,
+    marginVertical: 10,
+  },
+
+  priceRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderTopWidth: 1,
+    borderTopColor: "#F3E7ED",
+    paddingTop: 14,
+    marginBottom: 15,
+  },
+
+  price: {
+    color: "#A52E68",
+    fontSize: 17,
+    fontWeight: "900",
+    marginTop: 4,
+  },
+
+  houseCallText: {
+    color: "#382333",
+    fontSize: 11,
+    fontWeight: "700",
+    marginTop: 4,
+  },
+
+  button: {
+    backgroundColor: "#A52E68",
+    borderRadius: 11,
+    minHeight: 45,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 13,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+
+  secondaryButton: {
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E5BDD0",
+  },
+
+  secondaryButtonText: {
+    color: "#A52E68",
+  },
+
+  filterChip: {
+    paddingHorizontal: 17,
+    paddingVertical: 10,
+    borderRadius: 22,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#F0DDE7",
+    marginRight: 8,
+  },
+
+  activeFilterChip: {
+    backgroundColor: "#A52E68",
+    borderColor: "#A52E68",
+  },
+
+  filterText: {
+    color: "#766472",
+    fontSize: 12,
+    fontWeight: "700",
+  },
+
+  activeFilterText: {
+    color: "#FFFFFF",
+  },
+
+  input: {
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E8D6E0",
+    borderRadius: 11,
+    paddingHorizontal: 14,
+    paddingVertical: 13,
+    color: "#382333",
+    fontSize: 14,
+    marginTop: 7,
+    marginBottom: 12,
+  },
+
+  formCard: {
+    backgroundColor: "#FFFFFF",
+    padding: 17,
+    borderRadius: 17,
+    borderWidth: 1,
+    borderColor: "#F0DDE7",
+    gap: 5,
+  },
+
+  label: {
+    color: "#382333",
+    fontSize: 13,
+    fontWeight: "800",
+    marginTop: 8,
+  },
+
+  optionRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 14,
+    backgroundColor: "#FFF9FC",
+    borderWidth: 1,
+    borderColor: "#F0DDE7",
+    borderRadius: 11,
+    marginVertical: 5,
+  },
+
+  optionText: {
+    color: "#382333",
+    fontSize: 13,
+    fontWeight: "700",
+  },
+
+  summaryCard: {
+    backgroundColor: "#FBEAF2",
+    borderRadius: 13,
+    padding: 16,
+    marginVertical: 15,
+  },
+
+  summaryTitle: {
+    color: "#382333",
+    fontSize: 15,
+    fontWeight: "800",
+    marginBottom: 10,
+  },
+
+  summaryRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 5,
+  },
+
+  summaryValue: {
+    color: "#382333",
+    fontSize: 13,
+    fontWeight: "700",
+  },
+
+  totalPrice: {
+    color: "#A52E68",
+    fontSize: 20,
+    fontWeight: "900",
+  },
+
+  divider: {
+    height: 1,
+    backgroundColor: "#E9D3DE",
+    marginVertical: 12,
+  },
+
+  emptyState: {
+    backgroundColor: "#FFFFFF",
+    padding: 28,
+    borderRadius: 16,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#F0DDE7",
+    gap: 12,
+    marginVertical: 15,
+  },
+
+  bookingCard: {
+    backgroundColor: "#FFFFFF",
+    padding: 17,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#F0DDE7",
+    marginBottom: 13,
+    gap: 8,
+  },
+
+  status: {
+    alignSelf: "flex-start",
+    backgroundColor: "#FBEAF2",
+    color: "#A52E68",
+    paddingHorizontal: 11,
+    paddingVertical: 6,
+    borderRadius: 20,
+    fontSize: 11,
+    fontWeight: "800",
+    overflow: "hidden",
+  },
+
+  productCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#F0DDE7",
+    borderRadius: 15,
+    padding: 14,
+    marginBottom: 13,
+    gap: 14,
+  },
+
+  productIcon: {
+    width: 75,
+    height: 85,
+    backgroundColor: "#FBEAF2",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  joinCard: {
+    backgroundColor: "#FBEAF2",
+    padding: 20,
+    borderRadius: 16,
+    marginVertical: 22,
+    gap: 12,
+  },
+
+  joinTitle: {
+    color: "#382333",
+    fontSize: 20,
+    fontWeight: "900",
+  },
+
+  statsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 10,
+    marginBottom: 20,
+  },
+
+  statCard: {
+    width: "48%",
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#F0DDE7",
+    borderRadius: 14,
+    padding: 15,
+  },
+
+  statNumber: {
+    color: "#A52E68",
+    fontSize: 24,
+    fontWeight: "900",
+    marginBottom: 5,
+  },
+
+  actionRow: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 5,
+  },
+
+  toolCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#F0DDE7",
+    borderRadius: 13,
+    padding: 16,
+    marginBottom: 10,
+    gap: 13,
+  },
+
+  toolIcon: {
+    fontSize: 27,
+  },
+
+  smallNote: {
+    color: "#958692",
+    fontSize: 11,
+    lineHeight: 18,
+    marginVertical: 15,
+  },
+
+  bottomNavigation: {
+    flexDirection: "row",
+    backgroundColor: "#FFFFFF",
+    borderTopWidth: 1,
+    borderTopColor: "#F0DDE7",
+    paddingTop: 8,
+    paddingBottom: 5,
+    justifyContent: "space-around",
+  },
+
+  navItem: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 48,
+    gap: 3,
+  },
+
+  navIcon: {
+    fontSize: 21,
+    color: "#958692",
+  },
+
+  navLabel: {
+    fontSize: 9,
+    color: "#958692",
+    fontWeight: "700",
+  },
+
+  activeNavText: {
+    color: "#A52E68",
+    fontWeight: "900",
+  },
+
+  activeIndicator: {
+    width: 18,
+    height: 3,
+    backgroundColor: "#A52E68",
+    borderRadius: 3,
+    marginTop: 2,
+  },
+});
