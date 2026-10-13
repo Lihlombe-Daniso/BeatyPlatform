@@ -41,3 +41,18 @@ type BookingStatus =
   | "Confirmed"
   | "Completed"
   | "Cancelled";
+
+// Booking interface
+
+interface Professional {
+  id: string;
+  name: string;
+  category: Category;
+  city: string;
+  rating: number;
+  reviews: number;
+  price: number;
+  houseCalls: boolean;
+  houseCallFee: number;
+  description: string;
+}
