@@ -1033,4 +1033,214 @@ export default function App() {
   );
 
   // Dashboard Screen
-  
+
+   const completedBookings = bookings.filter(
+    (booking) => booking.status === "Completed"
+  );
+
+  const pendingBookings = bookings.filter(
+    (booking) => booking.status === "Pending"
+  );
+
+  const completedCommission = completedBookings.reduce(
+    (total, booking) =>
+      total + calculateCommission(booking.servicePrice),
+    0
+  );
+
+  const renderDashboard = () => (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.content}>
+        <SectionTitle
+          title="Professional dashboard"
+          subtitle="Manage bookings and monitor activity."
+        />
+
+        <View style={styles.statsGrid}>
+          <View style={styles.statCard}>
+            <Text style={styles.statNumber}>
+              {bookings.length}
+            </Text>
+
+            <Text style={styles.mutedText}>
+              Total bookings
+            </Text>
+          </View>
+
+          <View style={styles.statCard}>
+            <Text style={styles.statNumber}>
+              {pendingBookings.length}
+            </Text>
+
+            <Text style={styles.mutedText}>
+              Pending
+            </Text>
+          </View>
+
+          <View style={styles.statCard}>
+            <Text style={styles.statNumber}>
+              {completedBookings.length}
+            </Text>
+
+            <Text style={styles.mutedText}>
+              Completed
+            </Text>
+          </View>
+
+          <View style={styles.statCard}>
+            <Text style={styles.statNumber}>
+              R{completedCommission.toFixed(2)}
+            </Text>
+
+            <Text style={styles.mutedText}>
+              Example platform commission
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.joinCard}>
+          <Text style={styles.joinTitle}>
+            Platform commission
+          </Text>
+
+          <Text style={styles.description}>
+            The prototype calculates 5% of the service price
+            on completed bookings. House-call fees are
+            excluded from the commission calculation.
+          </Text>
+
+          <Text style={styles.mutedText}>
+            Commission is only calculated for completed
+            bookings in this dashboard.
+          </Text>
+        </View>
+
+        <SectionTitle
+          title="Booking management"
+          subtitle="Review customer requests."
+        />
+
+        {bookings.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Text style={styles.mutedText}>
+              No booking requests to manage yet.
+            </Text>
+          </View>
+        ) : (
+          bookings.map((booking) => (
+            <View key={booking.id} style={styles.bookingCard}>
+              <Text style={styles.professionalName}>
+                {booking.professional}
+              </Text>
+
+              <Text style={styles.description}>
+                {booking.service} · {booking.date}
+              </Text>
+
+              <Text style={styles.price}>
+                R
+                {(
+                  booking.servicePrice +
+                  booking.houseCallFee
+                ).toFixed(2)}
+              </Text>
+
+              <Text style={styles.status}>
+                {booking.status}
+              </Text>
+
+              {booking.status === "Pending" && (
+                <View style={styles.actionRow}>
+                  <View style={{ flex: 1 }}>
+                    <Button
+                      title="Confirm"
+                      onPress={() =>
+                        updateBookingStatus(
+                          booking.id,
+                          "Confirmed"
+                        )
+                      }
+                    />
+                  </View>
+
+                  <View style={{ flex: 1 }}>
+                    <Button
+                      title="Decline"
+                      secondary
+                      onPress={() =>
+                        updateBookingStatus(
+                          booking.id,
+                          "Cancelled"
+                        )
+                      }
+                    />
+                  </View>
+                </View>
+              )}
+
+              {booking.status === "Confirmed" && (
+                <Button
+                  title="Mark completed"
+                  onPress={() =>
+                    updateBookingStatus(
+                      booking.id,
+                      "Completed"
+                    )
+                  }
+                />
+              )}
+            </View>
+          ))
+        )}
+
+        <SectionTitle
+          title="Business tools"
+          subtitle="Tools to help grow a beauty business."
+        />
+
+        {[
+          {
+            icon: "💅",
+            title: "Services and prices",
+            description: "Manage your beauty service menu.",
+          },
+          {
+            icon: "📆",
+            title: "Availability",
+            description: "Set your working days and hours.",
+          },
+          {
+            icon: "🏡",
+            title: "House calls",
+            description: "Set travel options and fees.",
+          },
+          {
+            icon: "🛍️",
+            title: "Product listings",
+            description: "Prepare product listings and stock.",
+          },
+        ].map((feature) => (
+          <View key={feature.title} style={styles.toolCard}>
+            <Text style={styles.toolIcon}>
+              {feature.icon}
+            </Text>
+
+            <View style={{ flex: 1 }}>
+              <Text style={styles.professionalName}>
+                {feature.title}
+              </Text>
+
+              <Text style={styles.mutedText}>
+                {feature.description}
+              </Text>
+            </View>
+          </View>
+        ))}
+
+        <Text style={styles.smallNote}>
+          Demo dashboard: customers and professionals currently
+          share the same temporary booking list. Real accounts
+          and role-based access must be implemented before launch.
+        </Text>
+      </View>
+    </ScrollView>
