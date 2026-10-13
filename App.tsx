@@ -1244,3 +1244,92 @@ export default function App() {
         </Text>
       </View>
     </ScrollView>
+
+    // Navigation bar
+
+     const navigationItems: {
+    screen: Screen;
+    icon: string;
+    label: string;
+  }[] = [
+    { screen: "Home", icon: "⌂", label: "Home" },
+    { screen: "Discover", icon: "⌕", label: "Discover" },
+    { screen: "Bookings", icon: "▣", label: "Bookings" },
+    { screen: "Products", icon: "♧", label: "Shop" },
+    { screen: "Dashboard", icon: "▤", label: "Business" },
+  ];
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="#FFF9FC"
+      />
+
+      <View style={styles.appHeader}>
+        <TouchableOpacity onPress={() => setScreen("Home")}>
+          <Text style={styles.brand}>BeautyConnect</Text>
+          <Text style={styles.brandSubtitle}>
+            BEAUTY • STYLE • BOOKINGS
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.headerButton}
+          onPress={() => setScreen("Bookings")}
+        >
+          <Text style={styles.headerButtonText}>
+            ♡ {bookings.length > 0 ? bookings.length : ""}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.screenContainer}>
+        {screen === "Home" && renderHome()}
+        {screen === "Discover" && renderDiscover()}
+        {screen === "Bookings" && renderBookings()}
+        {screen === "Products" && renderProducts()}
+        {screen === "Dashboard" && renderDashboard()}
+      </View>
+
+      <View style={styles.bottomNavigation}>
+        {navigationItems.map((item) => (
+          <TouchableOpacity
+            key={item.screen}
+            style={styles.navItem}
+            onPress={() => {
+              setScreen(item.screen);
+
+              if (item.screen === "Bookings") {
+                setSelectedProfessional(null);
+              }
+            }}
+          >
+            <Text
+              style={[
+                styles.navIcon,
+                screen === item.screen && styles.activeNavText,
+              ]}
+            >
+              {item.icon}
+            </Text>
+
+            <Text
+              style={[
+                styles.navLabel,
+                screen === item.screen && styles.activeNavText,
+              ]}
+            >
+              {item.label}
+            </Text>
+
+            {screen === item.screen && (
+              <View style={styles.activeIndicator} />
+            )}
+          </TouchableOpacity>
+        ))}
+      </View>
+    </SafeAreaView>
+  );
+}
+
