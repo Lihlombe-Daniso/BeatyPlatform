@@ -967,4 +967,70 @@ export default function App() {
     </ScrollView>
   );
 
+  // Products Screen
+
+  const renderProducts = () => (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.content}>
+        <SectionTitle
+          title="Beauty marketplace"
+          subtitle="Explore products from beauty sellers."
+        />
+
+        {products.map((product) => (
+          <View key={product.id} style={styles.productCard}>
+            <View style={styles.productIcon}>
+              <Text style={{ fontSize: 35 }}>🛍️</Text>
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <Text style={styles.professionalName}>
+                {product.name}
+              </Text>
+
+              <Text style={styles.description}>
+                {product.description}
+              </Text>
+
+              <Text style={styles.mutedText}>
+                Sold by {product.seller}
+              </Text>
+
+              <Text style={styles.price}>
+                R{product.price.toFixed(2)}
+              </Text>
+
+              <Button
+                title="View product"
+                onPress={() =>
+                  Alert.alert(
+                    product.name,
+                    `${product.description}\n\nPrice: R${product.price.toFixed(2)}\n\nThis is a sample product. Real checkout will be added when the database and payment system are connected.`
+                  )
+                }
+              />
+            </View>
+          </View>
+        ))}
+
+        <View style={styles.joinCard}>
+          <Text style={styles.joinTitle}>
+            Sell your beauty products
+          </Text>
+
+          <Text style={styles.description}>
+            Wig sellers and beauty suppliers can use the
+            marketplace to reach more customers.
+          </Text>
+
+          <Button
+            title="Open professional dashboard"
+            onPress={() => setScreen("Dashboard")}
+          />
+        </View>
+      </View>
+    </ScrollView>
+  );
+
+  // Dashboard Screen
   
