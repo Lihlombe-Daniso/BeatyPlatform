@@ -183,3 +183,18 @@ const initialProducts: BeautyProduct[] = [
     seller: "Lash Paradise",
   },
 ];
+
+//  Main App Component
+
+export default function App() {
+  const [screen, setScreen] = useState<Screen>("Home");
+
+  const [professionals] = useState<Professional[]>(
+    initialProfessionals
+  );
+
+  const [products] = useState<BeautyProduct[]>(
+    initialProducts
+  );
+
+  
