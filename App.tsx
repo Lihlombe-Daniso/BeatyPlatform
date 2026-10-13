@@ -35,3 +35,9 @@ type Screen =
   | "Dashboard";
 
 // Booking statuses
+
+type BookingStatus =
+  | "Pending"
+  | "Confirmed"
+  | "Completed"
+  | "Cancelled";
