@@ -231,4 +231,25 @@ export default function App() {
     return Math.round(servicePrice * rate * 100) / 100;
   };
 
-  
+  // Search and filter section
+
+   const filteredProfessionals = useMemo(() => {
+    return professionals.filter((professional) => {
+      const matchesSearch =
+        professional.name
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        professional.city
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        professional.category
+          .toLowerCase()
+          .includes(search.toLowerCase());
+
+      const matchesCategory =
+        selectedCategory === "All" ||
+        professional.category === selectedCategory;
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [professionals, search, selectedCategory]);
