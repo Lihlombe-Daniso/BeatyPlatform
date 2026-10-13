@@ -56,3 +56,23 @@ interface Professional {
   houseCallFee: number;
   description: string;
 }
+
+interface BeautyProduct {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  seller: string;
+}
+
+interface Booking {
+  id: string;
+  professional: string;
+  service: string;
+  date: string;
+  servicePrice: number;
+  houseCallFee: number;
+  houseCall: boolean;
+  status: BookingStatus;
+}
+
