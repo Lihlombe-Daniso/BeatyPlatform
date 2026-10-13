@@ -476,3 +476,139 @@ export default function App() {
       />
     </View>
   );
+
+  // Home Screen
+
+   const renderHome = () => (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.hero}>
+        <Text style={styles.eyebrow}>
+          YOUR BEAUTY, YOUR WAY
+        </Text>
+
+        <Text style={styles.heroTitle}>
+          Your beauty.
+          {"\n"}
+          Your people.
+          {"\n"}
+          Your glow.
+        </Text>
+
+        <Text style={styles.heroDescription}>
+          Discover beauty professionals, book appointments
+          and shop beauty products in one place.
+        </Text>
+
+        <Button
+          title="Explore beauty services →"
+          onPress={() => setScreen("Discover")}
+        />
+
+        <Text style={styles.heroNote}>
+          Beauty services and products, all in one place.
+        </Text>
+      </View>
+
+      <View style={styles.content}>
+        <SectionTitle
+          title="Explore categories"
+          subtitle="Find the service you need."
+        />
+
+        <View style={styles.categoryGrid}>
+          {[
+            { name: "Nails", icon: "💅" },
+            { name: "Makeup", icon: "💄" },
+            { name: "Wigs", icon: "👩🏽" },
+            { name: "Weaves", icon: "✨" },
+            { name: "Hair", icon: "💇🏽‍♀️" },
+            { name: "Lashes", icon: "👁️" },
+          ].map((item) => (
+            <TouchableOpacity
+              key={item.name}
+              style={styles.categoryCard}
+              onPress={() => {
+                setSelectedCategory(item.name);
+                setScreen("Discover");
+              }}
+            >
+              <Text style={styles.categoryIcon}>
+                {item.icon}
+              </Text>
+
+              <Text style={styles.categoryName}>
+                {item.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <SectionTitle
+          title="Featured professionals"
+          subtitle="Discover beauty talent."
+        />
+
+        {professionals.slice(0, 3).map((professional) => (
+          <ProfessionalCard
+            key={professional.id}
+            professional={professional}
+          />
+        ))}
+
+        <Button
+          title="See all professionals"
+          secondary
+          onPress={() => setScreen("Discover")}
+        />
+
+        <SectionTitle
+          title="Beauty marketplace"
+          subtitle="Discover products from beauty sellers."
+        />
+
+        {products.slice(0, 2).map((product) => (
+          <View key={product.id} style={styles.productCard}>
+            <View style={styles.productIcon}>
+              <Text style={{ fontSize: 30 }}>✨</Text>
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <Text style={styles.professionalName}>
+                {product.name}
+              </Text>
+
+              <Text style={styles.mutedText}>
+                {product.seller}
+              </Text>
+
+              <Text style={styles.price}>
+                R{product.price.toFixed(2)}
+              </Text>
+            </View>
+          </View>
+        ))}
+
+        <Button
+          title="Shop all products"
+          secondary
+          onPress={() => setScreen("Products")}
+        />
+
+        <View style={styles.joinCard}>
+          <Text style={styles.joinTitle}>
+            Are you a beauty professional?
+          </Text>
+
+          <Text style={styles.description}>
+            Showcase your work, manage booking requests
+            and grow your business.
+          </Text>
+
+          <Button
+            title="Professional dashboard"
+            onPress={() => setScreen("Dashboard")}
+          />
+        </View>
+      </View>
+    </ScrollView>
+  );
