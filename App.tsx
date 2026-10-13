@@ -347,4 +347,17 @@ export default function App() {
     );
   };
 
-  
+  // Booking management functions for confirming, completing, and cancelling bookings
+
+   const updateBookingStatus = (
+    bookingId: string,
+    status: BookingStatus
+  ) => {
+    setBookings((previous) =>
+      previous.map((booking) =>
+        booking.id === bookingId
+          ? { ...booking, status }
+          : booking
+      )
+    );
+  };
